@@ -81,6 +81,7 @@ jQuery.fn.editable = function(target, options, callback) {
         height     : 'auto',
         event      : 'click',
         onblur     : 'cancel',
+        method     : 'POST',
         loadtype   : 'GET',
         loadtext   : 'Loading...',
         loaddata   : {},
@@ -277,10 +278,15 @@ jQuery.fn.editable = function(target, options, callback) {
 
                 /* show the saving indicator */
                 jQuery(self).html(settings.indicator);
-                jQuery.post(settings.target, submitdata, function(str) {
-                    self.innerHTML = str;
-                    self.editing = false;
-                    callback.apply(self, [self.innerHTML, settings]);
+                jQuery.ajax({
+                   type : settings.method,
+                   url  : settings.target,
+                   data : submitdata,
+                   success: function(string) {
+                       self.innerHTML = str;
+                       self.editing = false;
+                       callback.apply(self, [self.innerHTML, settings]);
+                   }
                 });
             }
                         
