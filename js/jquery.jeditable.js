@@ -283,7 +283,7 @@ jQuery.fn.editable = function(target, options, callback) {
                    url  : settings.target,
                    data : submitdata,
                    success: function(string) {
-                       self.innerHTML = str;
+                       self.innerHTML = string;
                        self.editing = false;
                        callback.apply(self, [self.innerHTML, settings]);
                    }
