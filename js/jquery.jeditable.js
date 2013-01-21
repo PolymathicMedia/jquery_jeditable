@@ -187,9 +187,14 @@ jQuery.fn.editable = function(target, options, callback) {
                url  : settings.loadurl,
                data : loaddata,
                success: function(string) {
-               	  window.clearTimeout(t);                
-                  content.apply(f, [string, settings, self]);
+                  content.apply(f, [string, settings, self]);                  
+               },
+               complete: function() {
+                  window.clearTimeout(t);
                   i.disabled = false;
+               },
+               error: function() {
+                  $(f).find(settings.type).val(self.revert);
                }
             });
         } else if (settings.data) {
