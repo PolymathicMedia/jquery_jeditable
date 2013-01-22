@@ -194,7 +194,7 @@ jQuery.fn.editable = function(target, options, callback) {
                   i.disabled = false;
                },
                error: function() {
-                  $(f).find(settings.type).val(self.revert);
+                  $(f).find('input,textarea').val(self.revert);
                }
             });
         } else if (settings.data) {
@@ -287,10 +287,16 @@ jQuery.fn.editable = function(target, options, callback) {
                    type : settings.method,
                    url  : settings.target,
                    data : submitdata,
+                   beforeSend: function() {
+                       $(self).removeClass('error')
+                   },
                    success: function(string) {
                        self.innerHTML = string;
                        self.editing = false;
                        callback.apply(self, [self.innerHTML, settings]);
+                   },
+                   error: function(xhr, text, error) {
+                       $(self).addClass('error')
                    }
                 });
             }
@@ -299,6 +305,7 @@ jQuery.fn.editable = function(target, options, callback) {
         });
 
         function reset() {
+            $(self).removeClass('error');
             self.innerHTML = self.revert;
             self.editing   = false;
         }
@@ -348,6 +355,7 @@ jQuery.editable = {
                 if (settings.height != 'none') { input.height(settings.height); }
                 /* https://bugzilla.mozilla.org/show_bug.cgi?id=236791 */
                 //input[0].setAttribute('autocomplete','off');
+                input.attr('type', settings.type);
                 input.attr('autocomplete','off');
                 jQuery(this).append(input);
                 return(input);
