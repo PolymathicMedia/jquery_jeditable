@@ -194,7 +194,7 @@ jQuery(function() {
                       i.disabled = false;
                    },
                    error: function() {
-                      $(f).find('input,textarea').val(self.revert);
+                      $(f).find('input[type!="submit"],textarea').val(self.revert);
                    }
                 });
             } else if (settings.data) {
